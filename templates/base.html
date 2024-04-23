@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    {% block head %}
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{{ title }}</title>
+    <link href="{{url_for('static',filename='css/main.css')}}" rel="stylesheet">
+    {% endblock %}
+</head>
+
+<body>
+    {% block header %}
+    <nav
+        class="bg-gray-950  shadow shadow-gray-300  dark:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500     w-100 px-8 md:px-auto absolute inset-x-0 top-0 dark: text-white ">
+        <div class="md:h-16 h-28 mx-auto md:px-4 container flex items-center justify-between flex-wrap md:flex-nowrap">
+            <!-- Logo -->
+            <div class="  text-white md:order-1">
+                <!-- Heroicon - Chip Outline -->
+                <a href="/"> <span class="h-10 w-10 font-extrabold "> Game <span> &#10060; </span> </span> </a>
+            </div>
+            <div class="   order-3 w-full md:w-auto md:order-2 lg:space-x-1 text-white">
+                <ul class="flex font-semibold justify-between sm:space-x-5 md:space-x-6 space-x-1 float-left">
+                    <!-- Active Link = text-indigo-500 Inactive Link = hover:text-indigo-500 -->
+                    <li class="md:px-4 md:py-2  text-white">
+                        <a href="/">Home</a>
+                    </li>
+                    <li class="md:px-4 md:py-2 ">
+                        <a href="/all">All games</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="order-2 md:order-3">
+                <button id="theme-toggle" type="button" class="text-gray-500    dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4
+            focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5">
+                    <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewbox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                    </svg>
+                    <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewbox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0
+                001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0
+                011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465
+                5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414
+                1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+                    </svg>
+                </button>
+
+            </div>
+        </div>
+    </nav>
+    {% endblock %}
+    <div id="content">{% block content %}{% endblock %}</div>
+</body>
+ <script>
+    var themeToggleDarkIcon = document.getElementById("theme-toggle-dark-icon");
+    var themeToggleLightIcon = document.getElementById("theme-toggle-light-icon");
+    // Change the icons inside the button based on previous settings
+    if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+    ) {
+        themeToggleLightIcon.classList.remove("hidden");
+    } else {
+        themeToggleDarkIcon.classList.remove("hidden");
+    }
+    var themeToggleBtn = document.getElementById("theme-toggle");
+    themeToggleBtn.addEventListener("click", function () { // Toggle icons inside button
+        themeToggleDarkIcon.classList.toggle("hidden");
+        themeToggleLightIcon.classList.toggle("hidden");
+        // If set via local storage previously
+        if (localStorage.getItem("color-theme")) {
+            if (localStorage.getItem("color-theme") === "light") {
+                document
+                    .documentElement
+                    .classList
+                    .add("dark");
+                localStorage.setItem("color-theme", "dark");
+            } else {
+                document
+                    .documentElement
+                    .classList
+                    .remove("dark");
+                localStorage.setItem("color-theme", "light");
+            }
+            // If NOT set via local storage previously
+        } else {
+            if (document
+                .documentElement
+                .classList
+                .contains("dark")) {
+                document
+                    .documentElement
+                    .classList
+                    .remove("dark");
+                localStorage.setItem("color-theme", "light");
+            } else {
+                document
+                    .documentElement
+                    .classList
+                    .add("dark");
+                localStorage.setItem("color-theme", "dark");
+            }
+        }
+    });
+</script>
+
+</html>
